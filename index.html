@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contenedor con Botones</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f0f2f5;
+        font-family: "Poppins", sans-serif;
+    }
+
+    .contenedor {
+        width: 350px;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.3s;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn1 {
+        background: #4A8FFF;
+    }
+
+    .btn1:hover {
+        background: #306ee3;
+    }
+
+    .btn2 {
+        background: #FF6A6A;
+    }
+
+    .btn2:hover {
+        background: #d95353;
+    }
+</style>
+
+</head>
+<body>
+
+    <div class="contenedor">
+        <a href="convertidor_billetes.html" class="btn btn1">Contabilizador Billetes</a>
+        <a href="expedientes.html" class="btn btn2">Informacion Escolar</a>
+    </div>
+
+</body>
+</html>

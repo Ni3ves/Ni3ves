@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Herramientas Financieras</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 30px;
+    }
+
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 760px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .box:hover { transform: scale(1.02); }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    input, button {
+      padding: 8px 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+    }
+
+    button {
+      background: #e67e22;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { background: #d35400; }
+
+    .resultado {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #27ae60;
+    }
+
+    #mensaje {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: darkblue;
+    }
+
+    /* Botón global */
+    .global-btn {
+      background: #c0392b;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+    .global-btn:hover { background: #922b21; }
+
+    /* Convertidor estilos */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .panel {
+      background: #fdfdfd;
+      border: 1px solid rgba(19,41,61,0.1);
+      padding: 14px;
+      border-radius: 12px;
+      text-align: left;
+    }
+    label { display: block; margin-bottom: 5px; }
+    .actions { margin-top: 8px; display: flex; gap: 8px; }
+    .result { margin-top: 10px; font-weight: bold; color: #0b3b66; }
+    @media (max-width:720px){ .grid { grid-template-columns: 1fr; } }
+
+    .back-container {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: black;
+    font-size: 16px;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: 0.3s ease;
+}
+
+/* Hover: efecto glass + elevación */
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.07);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+  </style>
+</head>
+<body>
+
+  <!-- Bloque 1: Bienvenida -->
+   <!-- Botón para regresar al login -->
+<div class="back-container">
+    <a href="index.html" class="back-btn">⟵ Regresar al Login</a>
+</div>
+  <div class="box">
+    <h2> Formulario de Bienvenida</h2>
+    <input type="text" id="nombreExtra" placeholder="Escribe tu nombre">
+    <br>
+    <button onclick="mostrarMensaje()">Listo</button>
+    <div id="mensaje"></div>
+  </div>
+
+  <!-- Bloque 2: Contador de Billetes -->
+  <div class="box">
+    <h2>💵 Contador de Billetes 💵</h2>
+    <div class="row"><label>$20</label><input type="number" id="b20" min="0"></div>
+    <div class="row"><label>$50</label><input type="number" id="b50" min="0"></div>
+    <div class="row"><label>$100</label><input type="number" id="b100" min="0"></div>
+    <div class="row"><label>$200</label><input type="number" id="b200" min="0"></div>
+    <div class="row"><label>$500</label><input type="number" id="b500" min="0"></div>
+    <div class="row"><label>$1000</label><input type="number" id="b1000" min="0"></div>
+    <button onclick="contabilizar()">Contabilizar</button>
+    <div id="resultado" class="resultado"></div>
+  </div>
+
+  <!-- Bloque 3: Convertidor -->
+  <div class="box">
+    <h2>💱 Convertidor Pesos ↔ Dólares</h2>
+
+    <label for="exchangeRate">Tasa de cambio (MXN por 1 USD)</label>
+    <div style="display:flex; gap:8px; justify-content:center;">
+      <input id="exchangeRate" type="number" step="0.0001" min="0" value="18.5">
+      <button id="resetRate" type="button">Restablecer 18.5</button>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <strong>Dólares → Pesos</strong>
+        <label for="usdAmount">Cantidad (USD)</label>
+        <input id="usdAmount" type="number" placeholder="Ej: 4" min="0" step="0.01">
+        <div class="actions">
+          <button id="convertUsd">Convertir</button>
+        </div>
+        <div id="usdResult" class="result"></div>
+      </div>
+
+      <div class="panel">
+        <strong>Pesos → Dólares</strong>
+        <label for="mxnAmount">Cantidad (MXN)</label>
+        <input id="mxnAmount" type="number" placeholder="Ej: 80" min="0" step="0.01">
+        <div class="actions">
+          <button id="convertMxn">Convertir</button>
+        </div>
+        <div id="mxnResult" class="result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón global -->
+  <div style="text-align: center; width: 100%;">
+    <button class="global-btn" onclick="limpiarTodo()">🧹 Limpiar Todo</button>
+  </div>
+
+  <script>
+    // Bienvenida
+    function mostrarMensaje() {
+      const nombre = document.getElementById("nombreExtra").value;
+      document.getElementById("mensaje").innerText =
+        nombre ? "¡Hola, " + nombre + "! Bienvenido " : "Por favor escribe tu nombre.";
+    }
+
+    // Contador de billetes
+    function contabilizar() {
+      const valores = { b20: 20, b50: 50, b100: 100, b200: 200, b500: 500, b1000: 1000 };
+      let total = 0;
+      for (let id in valores) {
+        const cantidad = parseInt(document.getElementById(id).value) || 0;
+        total += cantidad * valores[id];
+      }
+      document.getElementById("resultado").innerText = "Total: $" + total;
+    }
+
+    // Convertidor
+    const exchangeRateInput = document.getElementById('exchangeRate');
+    const resetRateBtn = document.getElementById('resetRate');
+    const usdAmount = document.getElementById('usdAmount');
+    const convertUsdBtn = document.getElementById('convertUsd');
+    const usdResult = document.getElementById('usdResult');
+    const mxnAmount = document.getElementById('mxnAmount');
+    const convertMxnBtn = document.getElementById('convertMxn');
+    const mxnResult = document.getElementById('mxnResult');
+    const DEFAULT_RATE = 18.5;
+
+    function getRate() {
+      const r = parseFloat(exchangeRateInput.value);
+      return (Number.isFinite(r) && r > 0) ? r : DEFAULT_RATE;
+    }
+    function formatMoney(value, currency) {
+      return Number(value).toFixed(2) + (currency === 'MXN' ? ' MXN' : ' USD');
+    }
+    convertUsdBtn.addEventListener('click', () => {
+      const usd = parseFloat(usdAmount.value);
+      if (!Number.isFinite(usd) || usd < 0) { usdResult.textContent = 'Cantidad inválida.'; return; }
+      usdResult.textContent = formatMoney(usd * getRate(), 'MXN');
+    });
+    convertMxnBtn.addEventListener('click', () => {
+      const mxn = parseFloat(mxnAmount.value);
+      if (!Number.isFinite(mxn) || mxn < 0) { mxnResult.textContent = 'Cantidad inválida.'; return; }
+      mxnResult.textContent = formatMoney(mxn / getRate(), 'USD');
+    });
+    resetRateBtn.addEventListener('click', () => { exchangeRateInput.value = DEFAULT_RATE; });
+
+    // Botón global
+    function limpiarTodo() {
+      // Bienvenida
+      document.getElementById("nombreExtra").value = "";
+      document.getElementById("mensaje").innerText = "";
+      // Billetes
+      ["b20","b50","b100","b200","b500","b1000"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("resultado").innerText = "";
+      // Convertidor
+      usdAmount.value = ""; usdResult.textContent = "";
+      mxnAmount.value = ""; mxnResult.textContent = "";
+      exchangeRateInput.value = DEFAULT_RATE;
+    }
+  </script>
+</body>
+</html>
